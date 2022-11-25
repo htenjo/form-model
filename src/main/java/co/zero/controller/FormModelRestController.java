@@ -1,52 +1,55 @@
 package co.zero.controller;
 
-import org.springframework.util.MimeTypeUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import co.zero.model.FormModel;
 import co.zero.repository.FormModelRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
-public class FormModelRestController {
+@Slf4j
+public class FormModelRestController implements FormModelAPI {
     private FormModelRepository repository;
 
     public FormModelRestController(FormModelRepository repository) {
         this.repository = repository;
     }
 
-    @GetMapping(value = "/", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    @Override
     public List<FormModel> list() {
         return repository.findAll();
     }
 
-    @PostMapping("/")
-    public FormModel create(@RequestBody FormModel model) {
+    @Override
+    public FormModel create(FormModel model) {
         return repository.save(model);
     }
 
-    @GetMapping("/{id}")
-    public Optional<FormModel> find(@PathVariable("id") String id) {
+    @Override
+    public Optional<FormModel> find(String id) {
         return repository.findById(id);
     }
 
-    @PutMapping("/{id}")
-    public FormModel update(@PathVariable("id") String id, @RequestBody FormModel model) {
+    @Override
+    public FormModel update(String id, FormModel model) {
         model.setId(id);
         return repository.save(model);
     }
 
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") String id) {
+    @Override
+    public void delete(String id) {
+        log.info("::: Deleting by id = {}", id);
         repository.deleteById(id);
-        return "::: ID deleted = " + id;
+    }
+
+    @Override
+    public Collection<FormModel> listFilteringByTag(List<String> tags) {
+        log.info("::: Filtering by TAG");
+        return repository.findByTagsIn(tags);
     }
 }
