@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  hello-mongo-web:
+  form-model:
     # build will get tagged with 'image'
     build: .
-    image: htenjo/hello-mongo-web
-    container_name: hello-mongo-web
+    image: htenjo/form-model
+    container_name: hello-model
     ports:
       - "8080:8080"
     depends_on:

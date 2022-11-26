@@ -1,6 +1,6 @@
 DOCKER_USERNAME ?= htenjo
 SPRING_PROFILE ?= dev
-APP_NAME ?= hello-world-web
+APP_NAME ?= form-model
 GIT_HASH ?= $(shell git log --format="%h" -n 1)
 
 build:
@@ -10,7 +10,7 @@ build_all:
 	mvn clean package
 
 run:
-	java -jar target/hello-world-web-0.0.1-SNAPSHOT.jar
+	java -jar target/form-model-0.0.1-SNAPSHOT.jar
 
 build_run: build run
 
